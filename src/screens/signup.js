@@ -1,7 +1,34 @@
-import { Image, Text, TextInput, TouchableOpacity, View } from "react-native";
+import React, { useState } from "react";
+
+import {
+  Image,
+  Pressable,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
+} from "react-native";
+import DateTimePickerModal from "react-native-modal-datetime-picker";
 
 const Signup = () => {
+  const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
+  const [dobValue, setDobValue] = useState("");
+
   const inputStyle = "border-b-2 border-b-red-300 p-2 rounded-md my-2";
+
+  const showDatePicker = () => {
+    setDatePickerVisibility(true);
+  };
+
+  const hideDatePicker = () => {
+    setDatePickerVisibility(false);
+  };
+
+  const handleConfirm = (date) => {
+    console.warn("A date has been picked: ", date);
+    setDobValue(date.toString());
+    hideDatePicker();
+  };
 
   return (
     <View className={"flex flex-1 "}>
@@ -20,7 +47,11 @@ const Signup = () => {
         <TextInput placeholder="Email" className={inputStyle} />
         <TextInput placeholder="Password" className={inputStyle} />
         <TextInput placeholder="Confirm Password" className={inputStyle} />
-        <TextInput placeholder="DOB" className={inputStyle} />
+
+        <Pressable className={inputStyle} onPress={showDatePicker}>
+          <Text>{dobValue === "" ? "DOB" : dobValue}</Text>
+        </Pressable>
+
         <TextInput placeholder="Gender" className={inputStyle} />
       </View>
 
@@ -29,6 +60,13 @@ const Signup = () => {
           <Text className={"text-lg text-orange-800"}>Sign up</Text>
         </TouchableOpacity>
       </View>
+
+      <DateTimePickerModal
+        isVisible={isDatePickerVisible}
+        mode="date"
+        onConfirm={handleConfirm}
+        onCancel={hideDatePicker}
+      />
     </View>
   );
 };
