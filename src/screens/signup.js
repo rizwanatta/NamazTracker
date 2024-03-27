@@ -9,10 +9,14 @@ import {
   View,
 } from "react-native";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
+import { Ionicons } from "@expo/vector-icons";
+
+import { getFormattedDateFull } from "../helpers/date";
 
 const Signup = () => {
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
   const [dobValue, setDobValue] = useState("");
+  const [gender, setGender] = useState("Female");
 
   const inputStyle = "border-b-2 border-b-red-300 p-2 rounded-md my-2";
 
@@ -28,6 +32,14 @@ const Signup = () => {
     console.warn("A date has been picked: ", date);
     setDobValue(date.toString());
     hideDatePicker();
+  };
+
+  const onFemalePressed = () => {
+    setGender("Female");
+  };
+
+  const onMalePressed = () => {
+    setGender("Male");
   };
 
   return (
@@ -49,10 +61,40 @@ const Signup = () => {
         <TextInput placeholder="Confirm Password" className={inputStyle} />
 
         <Pressable className={inputStyle} onPress={showDatePicker}>
-          <Text>{dobValue === "" ? "DOB" : dobValue}</Text>
+          <Text>
+            {dobValue === "" ? "DOB" : getFormattedDateFull(dobValue)}
+          </Text>
         </Pressable>
 
-        <TextInput placeholder="Gender" className={inputStyle} />
+        <View className={"flex flex-row justify-between p-4"}>
+          <Text>Gender: </Text>
+
+          <TouchableOpacity
+            onPress={onMalePressed}
+            className={"flex flex-row items-center"}
+          >
+            <Ionicons
+              name={gender === "Male" ? "radio-button-on" : "radio-button-off"}
+              size={25}
+              color={"blue"}
+            />
+            <Text>Male</Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity
+            onPress={onFemalePressed}
+            className={"flex flex-row items-center"}
+          >
+            <Ionicons
+              name={
+                gender === "Female" ? "radio-button-on" : "radio-button-off"
+              }
+              size={25}
+              color={"pink"}
+            />
+            <Text>Female</Text>
+          </TouchableOpacity>
+        </View>
       </View>
 
       <View className={"flex-none p-5"}>
@@ -66,6 +108,7 @@ const Signup = () => {
         mode="date"
         onConfirm={handleConfirm}
         onCancel={hideDatePicker}
+        maximumDate={new Date("1990")}
       />
     </View>
   );
