@@ -1,6 +1,13 @@
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { collection, addDoc } from "firebase/firestore";
-import { auth, firestoreConfig } from "../database/firebaseConfig";
+import { ref, uploadBytes } from "firebase/storage";
+
+import {
+  auth,
+  firestoreConfig,
+  storageConfig,
+} from "../database/firebaseConfig";
+import { imgToBlob, randomNameGenerator } from "../utils/help";
 
 async function attemptToSignup(email, password) {
   try {
@@ -34,4 +41,20 @@ async function attemptToSendUsersData(firstName, lastName, dob, gender, email) {
   }
 }
 
-export { attemptToSignup, attemptToSendUsersData };
+async function attemptToUploadImage(profileImage) {
+  try {
+    const imgRandomName = randomNameGenerator();
+
+    const storageRef = ref(storageConfig, `profile_pics/${imgRandomName}`);
+
+    const blob = await imgToBlob(profileImage);
+
+    let response = await uploadBytes(storageRef, blob);
+
+    console.log(response);
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+export { attemptToSignup, attemptToSendUsersData, attemptToUploadImage };

@@ -26,6 +26,7 @@ import { getFormattedDateFull } from "../helpers/date";
 import {
   attemptToSendUsersData,
   attemptToSignup,
+  attemptToUploadImage,
 } from "../services/signup-service";
 
 const Signup = () => {
@@ -64,8 +65,11 @@ const Signup = () => {
 
   const onSignupPressed = async () => {
     setIsLoading(true);
-    let response = await attemptToSignup(email, password);
-    await attemptToSendUsersData(firstName, lastName, dobValue, gender, email);
+
+    let response = await attemptToUploadImage(profileImage);
+
+    //let response = await attemptToSignup(email, password);
+    //await attemptToSendUsersData(firstName, lastName, dobValue, gender, email);
     setIsLoading(false);
   };
 
