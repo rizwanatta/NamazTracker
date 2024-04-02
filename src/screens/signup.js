@@ -8,7 +8,6 @@ import {
   TouchableOpacity,
   View,
   ActivityIndicator,
-  ScrollView,
 } from "react-native";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import { Ionicons } from "@expo/vector-icons";
@@ -16,8 +15,6 @@ import { Ionicons } from "@expo/vector-icons";
 import {
   CameraType,
   launchCameraAsync,
-  launchImageLibraryAsync,
-  MediaTypeOptions,
   requestCameraPermissionsAsync,
 } from "expo-image-picker";
 
@@ -29,7 +26,7 @@ import {
   attemptToUploadImage,
 } from "../services/signup-service";
 
-const Signup = () => {
+const Signup = ({ navigation }) => {
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
   const [dobValue, setDobValue] = useState("");
   const [gender, setGender] = useState("Female");
@@ -66,11 +63,23 @@ const Signup = () => {
   const onSignupPressed = async () => {
     setIsLoading(true);
 
-    let response = await attemptToUploadImage(profileImage);
+    let authResponse = await attemptToSignup(email, password);
 
-    //let response = await attemptToSignup(email, password);
-    //await attemptToSendUsersData(firstName, lastName, dobValue, gender, email);
+    const userUid = authResponse.user.uid;
+
+    await attemptToSendUsersData(
+      userUid,
+      firstName,
+      lastName,
+      dobValue,
+      gender,
+      email
+    );
+
+    await attemptToUploadImage(userUid, profileImage);
+
     setIsLoading(false);
+    navigation.replace("Home");
   };
 
   const onProfilePicPressed = async () => {

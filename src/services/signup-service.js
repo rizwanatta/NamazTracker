@@ -1,5 +1,5 @@
 import { createUserWithEmailAndPassword } from "firebase/auth";
-import { collection, addDoc } from "firebase/firestore";
+import { collection, addDoc, setDoc, doc } from "firebase/firestore";
 import { ref, uploadBytes } from "firebase/storage";
 
 import {
@@ -19,13 +19,19 @@ async function attemptToSignup(email, password) {
       message = "yara ap na ya email already use kra h";
     }
     alert(message);
+    console.error(error);
   }
 }
 
-async function attemptToSendUsersData(firstName, lastName, dob, gender, email) {
+async function attemptToSendUsersData(
+  uid,
+  firstName,
+  lastName,
+  dob,
+  gender,
+  email
+) {
   try {
-    const collectionRef = collection(firestoreConfig, "users");
-
     const data = {
       firstName: firstName,
       lastName: lastName,
@@ -34,18 +40,22 @@ async function attemptToSendUsersData(firstName, lastName, dob, gender, email) {
       email: email,
     };
 
-    const response = await addDoc(collectionRef, data);
+    const collectionRef = collection(firestoreConfig, "users");
+
+    const documentRef = doc(collectionRef, uid);
+
+    const response = await setDoc(documentRef, data);
     return response;
   } catch (error) {
     alert(error.message);
   }
 }
 
-async function attemptToUploadImage(profileImage) {
+async function attemptToUploadImage(uid, profileImage) {
   try {
     const imgRandomName = randomNameGenerator();
 
-    const storageRef = ref(storageConfig, `profile_pics/${imgRandomName}`);
+    const storageRef = ref(storageConfig, `${uid}/${imgRandomName}`);
 
     const blob = await imgToBlob(profileImage);
 
