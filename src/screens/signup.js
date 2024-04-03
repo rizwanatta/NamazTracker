@@ -25,6 +25,7 @@ import {
   attemptToSignup,
   attemptToUploadImage,
 } from "../services/signup-service";
+import { setUserUid } from "../services/database-service";
 
 const Signup = ({ navigation }) => {
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
@@ -77,6 +78,8 @@ const Signup = ({ navigation }) => {
     );
 
     await attemptToUploadImage(userUid, profileImage);
+
+    await setUserUid(userUid);
 
     setIsLoading(false);
     navigation.replace("Home");
