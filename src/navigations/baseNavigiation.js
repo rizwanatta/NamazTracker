@@ -4,6 +4,7 @@ import Signup from "../screens/signup";
 import Home from "../screens/home";
 import Login from "../screens/login";
 import Splash from "../screens/splash";
+import Profile from "../screens/profile";
 
 const Stack = createNativeStackNavigator();
 
@@ -18,7 +19,15 @@ function BaseNavigation() {
         <Stack.Screen name="Splash" component={Splash} />
         <Stack.Screen name="Login" component={Login} />
         <Stack.Screen name={"Signup"} component={Signup} />
-        <Stack.Screen name="Home" component={Home} />
+        <Stack.Screen name={"Profile"} component={Profile} />
+
+        <Stack.Screen
+          name="Home"
+          options={{
+            headerShown: true,
+          }}
+          component={Home}
+        />
       </Stack.Navigator>
     </NavigationContainer>
   );
