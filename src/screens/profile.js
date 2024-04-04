@@ -15,13 +15,13 @@ const Profile = ({ navigation }) => {
   };
 
   return (
-    <View>
+    <View className={"flex flex-1 bg-green-300"}>
       <Text>Profile</Text>
 
       <TouchableOpacity
         onPress={onLogoutPressed}
         className={
-          "flex flex-row justify-center p-5 bg-red-400 rounded-md items-center mt-10"
+          "flex flex-row justify-center p-5 bg-red-400 rounded-md items-center mt-10 absolute bottom-8 w-4/5 self-center"
         }
       >
         <Text className={"text-lg text-white"}>Logout</Text>
