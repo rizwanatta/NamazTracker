@@ -5,6 +5,7 @@ import Home from "../screens/home";
 import Login from "../screens/login";
 import Splash from "../screens/splash";
 import Profile from "../screens/profile";
+import FetchPractice from "../screens/fetchPractice";
 
 const Stack = createNativeStackNavigator();
 
@@ -16,6 +17,7 @@ function BaseNavigation() {
           headerShown: false,
         }}
       >
+        <Stack.Screen name="FetchPractice" component={FetchPractice} />
         <Stack.Screen name="Splash" component={Splash} />
         <Stack.Screen name="Login" component={Login} />
         <Stack.Screen name={"Signup"} component={Signup} />
